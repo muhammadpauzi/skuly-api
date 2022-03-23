@@ -70,6 +70,13 @@ const updateClass = async (req, res) => {
         const updatedClass = await Class.findByIdAndUpdate(classId, body, {
             new: true,
         });
+
+        const message = setAttributeMessage(
+            responseMessages.classNotFound,
+            classId
+        );
+        await handleNotFound(updatedClass, message);
+
         // and send to client
         return successResponse(res, {
             data: updatedClass,
@@ -91,6 +98,12 @@ const updateClassCode = async (req, res) => {
                 new: true,
             }
         );
+
+        const message = setAttributeMessage(
+            responseMessages.classNotFound,
+            classId
+        );
+        await handleNotFound(updatedClassCode, message);
 
         return successResponse(res, {
             data: {
