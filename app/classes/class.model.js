@@ -14,6 +14,7 @@ const classSchema = mongoose.Schema(
             type: String,
             length: 20,
             required: true,
+            unique: true,
         },
         // user: {
         //     type: mongoose.Schema.Types.ObjectId,

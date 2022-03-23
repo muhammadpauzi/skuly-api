@@ -1,7 +1,7 @@
 import { handleError } from '../../utils/handleError.js';
-import { randomString } from '../../utils/index.js';
 import { createdResponse, successResponse } from '../../utils/response.js';
 import Class from './class.model.js';
+import { getAvalaibleCode } from './helpers/getAvalaibleCode.js';
 
 const findAllClasses = async (res) => {
     try {
@@ -17,7 +17,7 @@ const findAllClasses = async (res) => {
 const createClass = async (req, res) => {
     try {
         const { name, description } = req.body;
-        const code = await randomString();
+        const code = await getAvalaibleCode();
         const newClass = await Class.create({ name, description, code });
         return createdResponse(res, {
             data: newClass,
