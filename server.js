@@ -16,6 +16,11 @@ await connectToMongoDB();
 
 isDevelopment() && app.use(morgan('dev'));
 
+// global middleware
+app.use(cors());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+
 // api routes
 app.use('/api', apiRouter);
 
