@@ -79,6 +79,30 @@ const updateClass = async (req, res) => {
     }
 };
 
+const updateClassCode = async (req, res) => {
+    try {
+        const { id: classId } = req.params;
+        const avalaibleCode = await getAvalaibleCode();
+
+        const updatedClassCode = await Class.findByIdAndUpdate(
+            classId,
+            { code: avalaibleCode },
+            {
+                new: true,
+            }
+        );
+
+        return successResponse(res, {
+            data: {
+                _id: updatedClassCode.id,
+                code: updatedClassCode.code,
+            },
+        });
+    } catch (error) {
+        handleError(res, error);
+    }
+};
+
 const deleteClass = async (req, res) => {
     try {
         // get id (class id) from url
@@ -107,5 +131,6 @@ const classService = {
     findClass,
     updateClass,
     deleteClass,
+    updateClassCode,
 };
 export default classService;

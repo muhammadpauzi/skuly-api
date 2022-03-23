@@ -59,3 +59,15 @@ export const updateClass = async (req, res) => {
 export const deleteClass = async (req, res) => {
     return await classService.deleteClass(req, res);
 };
+
+/**
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @desc Update class code by id
+ * @method PUT
+ * @access Private
+ */
+export const updateClassCode = async (req, res) => {
+    return await classService.updateClassCode(req, res);
+};
