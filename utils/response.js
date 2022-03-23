@@ -11,3 +11,9 @@ export const successResponse = (res, data = {}, statusCode = SUCCESS) => {
     data.statusCode = statusCode;
     return res.status(statusCode).json(data);
 };
+
+export const notFoundResponse = (res, data = {}, statusCode = NOT_FOUND) => {
+    data.success = false;
+    data.statusCode = statusCode;
+    return res.status(statusCode).json(data);
+};

@@ -11,16 +11,19 @@ export const handleError = (res = {}, err = {}) => {
     if (isDevelopment()) {
         errorLog(err);
     }
-    console.log(err.errors);
-    // Sends error to user
-    res.status(err.statusCode).json({
+
+    const statusCode = err.statusCode || 500;
+    const errorCode = err.errorCode || null;
+    const errorMessage =
+        typeof err.message === 'string' && err.message !== ''
+            ? err.message
+            : null;
+
+    res.status(statusCode).json({
         success: false,
-        statusCode: err.statusCode,
-        errorCode: err.errorCode,
-        errorMessage:
-            typeof err.message === 'string' && err.message !== ''
-                ? err.message
-                : null,
+        statusCode,
+        errorCode,
+        errorMessage,
         errors: err.errors,
     });
 };

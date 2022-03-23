@@ -16,8 +16,20 @@ export const findAllClasses = async (_, res) => {
  *
  * @param {Object} req
  * @param {Object} res
- * @desc Find all classes
+ * @desc Find one class by id
  * @method GET
+ * @access Private
+ */
+export const findClass = async (req, res) => {
+    return await classService.findClass(req, res);
+};
+
+/**
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @desc Create a class
+ * @method POST
  * @access Private
  */
 export const createClass = async (req, res) => {

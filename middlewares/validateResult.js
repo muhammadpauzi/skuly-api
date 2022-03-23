@@ -16,7 +16,6 @@ const validateResult = (req, res, next) => {
         }
         return next();
     } catch (err) {
-        console.log(buildErrorsValidation(err.mapped()));
         return handleError(res, {
             statusCode: 422,
             errorCode: err.code,

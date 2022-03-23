@@ -7,11 +7,8 @@ export const getAvalaibleCode = async () => {
             let code = await randomString();
             while (true) {
                 const class_ = await Class.findOne({ code });
-                if (class_) {
-                    code = await randomString();
-                } else {
-                    break;
-                }
+                if (!class_) break;
+                code = await randomString();
             }
             return resolve(code);
         } catch (error) {
