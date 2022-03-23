@@ -1,16 +1,21 @@
 import express from 'express';
 import colors from 'colors';
 import cors from 'cors';
+import morgan from 'morgan';
 import dotenv from 'dotenv';
 import { getEnv, isDevelopment } from './utils';
 import { connectToMongoDB } from './configs/database.js';
 import { infoLog } from './utils/log.js';
+import { apiRouter } from './routes/index.js';
 dotenv.config();
 
 const app = express();
 const PORT = getEnv('PORT', 5000);
 
 await connectToMongoDB();
+
+// api routes
+app.use('/api', apiRouter);
 
 app.listen(PORT, () => {
     // development mode
