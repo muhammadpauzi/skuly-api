@@ -3,7 +3,7 @@ import colors from 'colors';
 import cors from 'cors';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
-import { getEnv, isDevelopment } from './utils';
+import { getEnv, isDevelopment } from './utils/index.js';
 import { connectToMongoDB } from './configs/database.js';
 import { infoLog } from './utils/log.js';
 import { apiRouter } from './routes/index.js';
