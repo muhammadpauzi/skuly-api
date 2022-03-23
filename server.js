@@ -14,6 +14,8 @@ const PORT = getEnv('PORT', 5000);
 
 await connectToMongoDB();
 
+isDevelopment() && app.use(morgan('dev'));
+
 // api routes
 app.use('/api', apiRouter);
 
