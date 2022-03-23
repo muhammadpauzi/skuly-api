@@ -55,5 +55,29 @@ const createClass = async (req, res) => {
     }
 };
 
-const classService = { findAllClasses, createClass, findClass };
+// TODO: handle policy when update class (req.user.id === class.userId)
+// TODO: handle is id (class id) valid
+const updateClass = async (req, res) => {
+    try {
+        // get id (class id) from url
+        const { id: classId } = req.params;
+        // TODO: refactor this code
+        let body = {};
+        if (req.body && req.body.name) body.name = req.body.name;
+        if (req.body && req.body.description)
+            body.description = req.body.description;
+        // update class by id  and return the updated class
+        const updatedClass = await Class.findByIdAndUpdate(classId, body, {
+            new: true,
+        });
+        // and send to client
+        return successResponse(res, {
+            data: updatedClass,
+        });
+    } catch (error) {
+        handleError(res, error);
+    }
+};
+
+const classService = { findAllClasses, createClass, findClass, updateClass };
 export default classService;

@@ -35,3 +35,15 @@ export const findClass = async (req, res) => {
 export const createClass = async (req, res) => {
     return await classService.createClass(req, res);
 };
+
+/**
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @desc Update class
+ * @method POST
+ * @access Private
+ */
+export const updateClass = async (req, res) => {
+    return await classService.updateClass(req, res);
+};
