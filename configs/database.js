@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { getEnv } from '../utils/index.js';
 import { errorLog, successLog } from '../utils/log.js';
 
 export const connectToMongoDB = async () => {
