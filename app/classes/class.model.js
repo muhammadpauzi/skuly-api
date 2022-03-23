@@ -10,6 +10,11 @@ const classSchema = mongoose.Schema(
         description: {
             type: String,
         },
+        code: {
+            type: String,
+            length: 20,
+            required: true,
+        },
         // user: {
         //     type: mongoose.Schema.Types.ObjectId,
         //     required: true,
