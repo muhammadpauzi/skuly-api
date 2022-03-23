@@ -79,5 +79,33 @@ const updateClass = async (req, res) => {
     }
 };
 
-const classService = { findAllClasses, createClass, findClass, updateClass };
+const deleteClass = async (req, res) => {
+    try {
+        // get id (class id) from url
+        const { id: classId } = req.params;
+        // update class by id  and return the updated class
+        const class_ = await Class.findById(classId);
+        // create message for class not found
+        const message = setAttributeMessage(
+            responseMessages.classNotFound,
+            classId
+        );
+        // if class not found, the errors are gonna be send to catch error
+        await handleNotFound(class_, message);
+        // delete class
+        class_.remove();
+        // and send to client
+        return successResponse(res, {});
+    } catch (error) {
+        handleError(res, error);
+    }
+};
+
+const classService = {
+    findAllClasses,
+    createClass,
+    findClass,
+    updateClass,
+    deleteClass,
+};
 export default classService;

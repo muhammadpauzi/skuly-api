@@ -41,9 +41,21 @@ export const createClass = async (req, res) => {
  * @param {Object} req
  * @param {Object} res
  * @desc Update class
- * @method POST
+ * @method PUT
  * @access Private
  */
 export const updateClass = async (req, res) => {
     return await classService.updateClass(req, res);
+};
+
+/**
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @desc Delete class by id
+ * @method DELETE
+ * @access Private
+ */
+export const deleteClass = async (req, res) => {
+    return await classService.deleteClass(req, res);
 };
