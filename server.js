@@ -26,8 +26,10 @@ app.use('/api', apiRouter);
 
 app.listen(PORT, () => {
     // development mode
-    if (isDevelopment())
+    if (isDevelopment()) {
         infoLog(`Server is running at http://localhost:${PORT}`);
-    // production mode
-    infoLog(`Server is running in production mode on port ${PORT}`);
+    } else {
+        // production mode
+        infoLog(`Server is running in production mode on port ${PORT}`);
+    }
 });
