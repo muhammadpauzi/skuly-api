@@ -1,7 +1,9 @@
-export const getEnv = (key = '', defaultValue = null) => {
+const getEnv = (key = '', defaultValue = null) => {
     return process.env[key] || defaultValue;
 };
 
-export const isDevelopment = () => {
+const isDevelopment = () => {
     return getEnv('NODE_ENV', 'development') === 'development';
 };
+
+export { getEnv, isDevelopment };
