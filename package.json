@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "main": "server.js",
   "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "start:dev": "nodemon server.js"
+  },
   "license": "MIT",
   "dependencies": {
     "colors": "^1.4.0",
