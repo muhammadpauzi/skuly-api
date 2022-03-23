@@ -4,7 +4,7 @@ import Class from './class.model.js';
 
 const findAllClasses = async (res) => {
     try {
-        const classes = await Class.find().sort({ createdAt: 1 });
+        const classes = await Class.find().sort({ createdAt: -1 });
         return successResponse(res, {
             data: classes,
         });
