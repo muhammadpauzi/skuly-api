@@ -1,17 +1,21 @@
 import { validateResult } from '../../../middlewares/validateResult.js';
 import { check } from 'express-validator';
+import { setAttributeMessage } from '../../../utils/setAttributeMessage.js';
+import { validationMessages } from '../../../constants/messages.js';
 
-/**
- * Validates create new item request
- */
+const { nameRequired } = {
+    nameRequired: setAttributeMessage(validationMessages.required, 'name'),
+};
+
 const validateCreateClass = [
     check('name')
         .exists()
-        .withMessage('MISSING')
+        .withMessage(nameRequired)
         .not()
         .isEmpty()
-        .withMessage('IS_EMPTY')
+        .withMessage(nameRequired)
         .trim(),
+    check('description').trim(),
     (req, res, next) => {
         validateResult(req, res, next);
     },
