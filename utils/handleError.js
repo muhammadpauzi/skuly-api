@@ -11,13 +11,16 @@ export const handleError = (res = {}, err = {}) => {
     if (isDevelopment()) {
         errorLog(err);
     }
-
+    console.log(err.errors);
     // Sends error to user
-    res.status(err.code).json({
+    res.status(err.statusCode).json({
         success: false,
-        errorCode: err.code,
-        errors: {
-            message: err.message,
-        },
+        statusCode: err.statusCode,
+        errorCode: err.errorCode,
+        errorMessage:
+            typeof err.message === 'string' && err.message !== ''
+                ? err.message
+                : null,
+        errors: err.errors,
     });
 };

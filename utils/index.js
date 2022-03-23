@@ -8,6 +8,10 @@ const isDevelopment = () => {
     return getEnv('NODE_ENV', 'development') === 'development';
 };
 
+const upperCaseFirstLetterOfSentence = (string) => {
+    return string[0].toUpperCase() + string.substr(1, string.length);
+};
+
 const randomString = (length = 10, encoding = 'hex') => {
     return new Promise((resolve, reject) => {
         return crypto.randomBytes(length, (err, buffer) => {
@@ -17,4 +21,4 @@ const randomString = (length = 10, encoding = 'hex') => {
     });
 };
 
-export { getEnv, isDevelopment, randomString };
+export { getEnv, isDevelopment, randomString, upperCaseFirstLetterOfSentence };
