@@ -1,8 +1,8 @@
 import express from 'express';
-import { findAllClasses } from './class.controller.js';
+import { createClass, findAllClasses } from './class.controller.js';
 
 const router = express.Router();
 
-router.route('/').get(findAllClasses);
+router.route('/').get(findAllClasses).post(createClass);
 
 export default router;

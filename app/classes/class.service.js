@@ -8,9 +8,21 @@ const findAllClasses = async (res) => {
             .status(200)
             .json({ success: true, statusCode: 200, data: classes });
     } catch (error) {
-        handleError(error);
+        handleError(res, error);
     }
 };
 
-const classService = { findAllClasses };
+const createClass = async (req, res) => {
+    try {
+        const { name, description } = req.body;
+        const newClass = await Class.create({ name, description });
+        return res
+            .status(201)
+            .json({ success: true, statusCode: 201, data: newClass });
+    } catch (error) {
+        handleError(res, error);
+    }
+};
+
+const classService = { findAllClasses, createClass };
 export default classService;
