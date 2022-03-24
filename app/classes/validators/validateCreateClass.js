@@ -8,13 +8,7 @@ const { nameRequired } = {
 };
 
 const validateCreateClass = [
-    check('name')
-        .exists()
-        .withMessage(nameRequired)
-        .not()
-        .isEmpty()
-        .withMessage(nameRequired)
-        .trim(),
+    check('name').not().isEmpty().withMessage(nameRequired).trim(),
     check('description').trim(),
     (req, res, next) => {
         validateResult(req, res, next);
