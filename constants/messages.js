@@ -6,6 +6,9 @@ export const authMessages = {
     userRegistered: 'The user has been successfully registered.',
     failed: 'Sign in failed, try again!.',
     userLoggedIn: 'The user has been successfully logged in.',
+    noToken: 'Not authorized, no token.',
+    tokenNotValid: 'Token not valid.',
+    hasLoggedIn: 'The user already logged in.',
 };
 
 export const validationMessages = {
