@@ -7,7 +7,11 @@ export const setCookieToken = async (res, payload) => {
             const token = jwt.sign(payload, getEnv('JWT_SECRET'), {
                 expiresIn: '4d',
             });
-            res.cookie('token', token);
+            res.cookie('token', token, {
+                httpOnly: true,
+                maxAge: 345600000, // 4d (same with expiresIn jwt)
+                secure: getEnv('NODE_ENV', 'development') === 'production',
+            });
             resolve(token);
         } catch (error) {
             reject(error);
