@@ -4,6 +4,8 @@ export const responseMessages = {
 
 export const authMessages = {
     userRegistered: 'The user has been successfully registered.',
+    failed: 'Sign in failed, try again!.',
+    userLoggedIn: 'The user has been successfully logged in.',
 };
 
 export const validationMessages = {
