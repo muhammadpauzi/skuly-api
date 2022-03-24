@@ -3,6 +3,7 @@ import colors from 'colors';
 import cors from 'cors';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 import { getEnv, isDevelopment } from './utils/index.js';
 import { connectToMongoDB } from './configs/database.js';
 import { infoLog } from './utils/log.js';
@@ -17,6 +18,7 @@ await connectToMongoDB();
 isDevelopment() && app.use(morgan('dev'));
 
 // global middleware
+app.use(cookieParser(getEnv('COOKIE_PARSER_SECRET', '123')));
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
