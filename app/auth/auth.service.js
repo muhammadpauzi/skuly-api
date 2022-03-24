@@ -1,6 +1,10 @@
 import { authMessages } from '../../constants/messages.js';
 import { handleError } from '../../utils/handleError.js';
-import { createdResponse, unauthorizedResponse } from '../../utils/response.js';
+import {
+    createdResponse,
+    successResponse,
+    unauthorizedResponse,
+} from '../../utils/response.js';
 import User from '../users/user.model.js';
 import { comparePassword } from './helpers/comparePassword.js';
 import { hashPassword } from './helpers/hashPassword.js';
@@ -52,9 +56,21 @@ const signUp = async (req, res) => {
     }
 };
 
+const getMe = async (req, res) => {
+    try {
+        const user = req.user;
+        return successResponse(res, {
+            data: user,
+        });
+    } catch (error) {
+        handleError(res, error);
+    }
+};
+
 const authService = {
     signIn,
     signUp,
+    getMe,
 };
 
 export default authService;
