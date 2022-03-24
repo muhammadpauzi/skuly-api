@@ -27,4 +27,13 @@ const userSchema = mongoose.Schema(
     { timestamps: true }
 );
 
+// hide password
+userSchema.set('toJSON', {
+    transform: function (doc, ret, opt) {
+        delete ret['password'];
+        delete ret['__v'];
+        return ret;
+    },
+});
+
 export default mongoose.model('User', userSchema);
