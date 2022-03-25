@@ -1,5 +1,6 @@
 import express from 'express';
 import {
+    findAllMyClasses,
     createClass,
     deleteClass,
     findAllClasses,
@@ -7,16 +8,20 @@ import {
     joinStudentByCode,
     updateClass,
     updateClassCode,
+    findAllMyJoinedClasses,
 } from './class.controller.js';
 import { validateCreateClass } from './validators/validateCreateClass.js';
 import { validateUpdateClass } from './validators/validateUpdateClass.js';
 import { verifyJwtToken } from '../../middlewares/verifyJwtToken.js';
+import { isDevelopment } from '../../utils/index.js';
 const router = express.Router();
 
-router
-    .route('/')
-    .get(verifyJwtToken, findAllClasses)
-    .post(verifyJwtToken, validateCreateClass, createClass);
+router.route('/').post(verifyJwtToken, validateCreateClass, createClass);
+router.get('/me', verifyJwtToken, findAllMyClasses);
+router.get('/joined', verifyJwtToken, findAllMyJoinedClasses);
+
+isDevelopment() && router.get('/', verifyJwtToken, findAllClasses);
+
 router
     .route('/:id')
     .get(verifyJwtToken, findClass)
@@ -24,7 +29,6 @@ router
     .delete(verifyJwtToken, deleteClass);
 
 router.get('/:id/join', verifyJwtToken, joinStudentByCode);
-
 router.put('/:id/code', updateClassCode);
 
 export default router;

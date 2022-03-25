@@ -6,6 +6,8 @@ export const responseMessages = {
     alreadyJoined: 'You already joined this class.',
     dontHavePermissionToDeleteClass:
         "You don't have any permissions to delete this class",
+    dontHavePermissionToUpdateClass:
+        "You don't have any permissions to update this class",
     // success
     classDeleted: 'The class has been successfully deleted.',
     classUpdated: 'The class has been successfully updated.',

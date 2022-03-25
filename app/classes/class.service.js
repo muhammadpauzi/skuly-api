@@ -14,6 +14,54 @@ import { handleAuthorize } from '../../utils/handleAuthorize.js';
 
 // TODO: change findAllClasses to findAllMyClassc
 // TODO: add endpoint to get joined class
+const findAllMyClasses = async (req, res) => {
+    try {
+        console.log('MASUK');
+        const isWithTeacher = ['1', 'true'].includes(req.query.with_teacher);
+        const { id: userId } = req.user;
+        let classes;
+        if (isWithTeacher) {
+            classes = await Class.find({ teacher: userId })
+                .sort({ createdAt: -1 })
+                .populate('teacher');
+        } else {
+            classes = await Class.find({ teacher: userId }).sort({
+                createdAt: -1,
+            });
+        }
+
+        return successResponse(res, {
+            data: classes,
+        });
+    } catch (error) {
+        handleError(res, error);
+    }
+};
+
+const findAllMyJoinedClasses = async (req, res) => {
+    try {
+        const isWithTeacher = ['1', 'true'].includes(req.query.with_teacher);
+        const { id: userId } = req.user;
+
+        let classes;
+        if (isWithTeacher) {
+            classes = await Class.find({ students: { $in: [userId] } })
+                .sort({ createdAt: -1 })
+                .populate('teacher');
+        } else {
+            classes = await Class.find({ students: { $in: [userId] } }).sort({
+                createdAt: -1,
+            });
+        }
+
+        return successResponse(res, {
+            data: classes,
+        });
+    } catch (error) {
+        handleError(res, error);
+    }
+};
+
 const findAllClasses = async (req, res) => {
     try {
         const isWithTeacher = ['1', 'true'].includes(req.query.with_teacher);
@@ -39,12 +87,21 @@ const findClass = async (req, res) => {
         const isWithTeacher = ['1', 'true'].includes(req.query.with_teacher);
         // get id (class id) from url
         const { id: classId } = req.params;
+        const { id: userId } = req.user;
+
         let class_;
         if (isWithTeacher) {
-            class_ = await Class.findById(classId).populate('teacher');
+            class_ = await Class.findOne({
+                _id: classId,
+                students: { $in: [userId] },
+            }).populate('teacher');
         } else {
-            class_ = await Class.findById(classId);
+            class_ = await Class.findOne({
+                _id: classId,
+                students: { $in: [userId] },
+            });
         }
+
         // create message for class not found
         const message = setAttributeMessage(
             responseMessages.classNotFound,
@@ -95,6 +152,7 @@ const updateClass = async (req, res) => {
     try {
         // get id (class id) from url
         const { id: classId } = req.params;
+        const { id: userId } = req.user;
         // TODO: refactor this code
         let body = {};
         if (req.body && req.body.name) body.name = req.body.name;
@@ -110,6 +168,12 @@ const updateClass = async (req, res) => {
             classId
         );
         await handleNotFound(updatedClass, message);
+
+        await handleAuthorize(
+            userId,
+            updatedClass.id,
+            responseMessages.dontHavePermissionToUpdateClass
+        );
 
         // and send to client
         return successResponse(res, {
@@ -143,7 +207,7 @@ const updateClassCode = async (req, res) => {
         await handleAuthorize(
             userId,
             updatedClassCode.id,
-            responseMessages.dontHavePermissionToDeleteClass
+            responseMessages.dontHavePermissionToUpdateClass
         );
 
         return successResponse(res, {
@@ -247,6 +311,8 @@ const joinStudentByCode = async (req, res) => {
 };
 
 const classService = {
+    findAllMyClasses,
+    findAllMyJoinedClasses,
     findAllClasses,
     createClass,
     findClass,

@@ -8,6 +8,30 @@ import classService from './class.service.js';
  * @method GET
  * @access Private
  */
+export const findAllMyClasses = async (req, res) => {
+    return await classService.findAllMyClasses(req, res);
+};
+
+/**
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @desc Find all classes
+ * @method GET
+ * @access Private
+ */
+export const findAllMyJoinedClasses = async (req, res) => {
+    return await classService.findAllMyJoinedClasses(req, res);
+};
+
+/**
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @desc Find all classes
+ * @method GET
+ * @access Private
+ */
 export const findAllClasses = async (req, res) => {
     return await classService.findAllClasses(req, res);
 };
