@@ -4,6 +4,8 @@ export const responseMessages = {
     classCodeNotExist: 'The class with the code `:attribute` not found.',
     cannotJoinTheClass: "You can't join this class.",
     alreadyJoined: 'You already joined this class.',
+    dontHavePermissionToDeleteClass:
+        "You don't have any permissions to delete this class",
     // success
     classDeleted: 'The class has been successfully deleted.',
     classUpdated: 'The class has been successfully updated.',

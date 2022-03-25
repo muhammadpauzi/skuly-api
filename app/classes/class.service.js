@@ -10,6 +10,7 @@ import { getAvalaibleCode } from './helpers/getAvalaibleCode.js';
 import { handleNotFound } from '../../utils/handleNotFound.js';
 import { responseMessages } from '../../constants/messages.js';
 import { FORBIDDEN } from '../../constants/statusCode.js';
+import { handleAuthorize } from '../../utils/handleAuthorize.js';
 
 // TODO: change findAllClasses to findAllMyClassc
 // TODO: add endpoint to get joined class
@@ -123,6 +124,7 @@ const updateClass = async (req, res) => {
 const updateClassCode = async (req, res) => {
     try {
         const { id: classId } = req.params;
+        const { id: userId } = req.user;
         const avalaibleCode = await getAvalaibleCode();
 
         const updatedClassCode = await Class.findByIdAndUpdate(
@@ -138,6 +140,11 @@ const updateClassCode = async (req, res) => {
             classId
         );
         await handleNotFound(updatedClassCode, message);
+        await handleAuthorize(
+            userId,
+            updatedClassCode.id,
+            responseMessages.dontHavePermissionToDeleteClass
+        );
 
         return successResponse(res, {
             message: responseMessages.classCodeUpdated,
@@ -155,8 +162,10 @@ const deleteClass = async (req, res) => {
     try {
         // get id (class id) from url
         const { id: classId } = req.params;
+        const { id: userId } = req.user;
         // update class by id  and return the updated class
         const class_ = await Class.findById(classId);
+
         // create message for class not found
         const message = setAttributeMessage(
             responseMessages.classNotFound,
@@ -164,6 +173,12 @@ const deleteClass = async (req, res) => {
         );
         // if class not found, the errors are gonna be send to catch error
         await handleNotFound(class_, message);
+        await handleAuthorize(
+            userId,
+            class_.id,
+            responseMessages.dontHavePermissionToDeleteClass
+        );
+
         // delete class
         class_.remove();
         // and send to client
@@ -189,14 +204,11 @@ const joinStudentByCode = async (req, res) => {
         );
         await handleNotFound(class_, message);
 
-        if (class_.teacher.id.toString('hex') === user.id)
-            return clientErrorResponse(
-                res,
-                {
-                    message: responseMessages.cannotJoinTheClass,
-                },
-                FORBIDDEN
-            );
+        await handleAuthorize(
+            user.id,
+            String(class_.teacher.id),
+            responseMessages.dontHavePermissionToDeleteClass
+        );
 
         if (class_.code !== code)
             return clientErrorResponse(
