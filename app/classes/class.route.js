@@ -4,6 +4,7 @@ import {
     deleteClass,
     findAllClasses,
     findClass,
+    joinStudentByCode,
     updateClass,
     updateClassCode,
 } from './class.controller.js';
@@ -21,6 +22,8 @@ router
     .get(verifyJwtToken, findClass)
     .put(verifyJwtToken, validateUpdateClass, updateClass)
     .delete(verifyJwtToken, deleteClass);
+
+router.get('/:id/join', verifyJwtToken, joinStudentByCode);
 
 router.put('/:id/code', updateClassCode);
 

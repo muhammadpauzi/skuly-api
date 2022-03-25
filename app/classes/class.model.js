@@ -1,23 +1,5 @@
 import mongoose from 'mongoose';
-
-const studentSchema = new mongoose.Schema({
-    username: {
-        type: String,
-        required: true,
-        unique: true,
-    },
-    name: {
-        type: String,
-        maxlength: 512,
-        required: true,
-    },
-    email: {
-        type: String,
-        maxlength: 512,
-        required: true,
-        unique: true,
-    },
-});
+import { isDevelopment } from '../../utils/index.js';
 
 const classSchema = new mongoose.Schema(
     {
@@ -56,8 +38,11 @@ const classSchema = new mongoose.Schema(
 // hide code
 classSchema.set('toJSON', {
     transform: function (doc, ret, opt) {
-        delete ret['code'];
-        delete ret['__v'];
+        // in production
+        if (!isDevelopment()) {
+            delete ret['code'];
+            delete ret['__v'];
+        }
         return ret;
     },
 });

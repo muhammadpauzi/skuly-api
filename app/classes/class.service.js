@@ -1,11 +1,18 @@
 import { setAttributeMessage } from '../../utils/setAttributeMessage.js';
 import { handleError } from '../../utils/handleError.js';
-import { createdResponse, successResponse } from '../../utils/response.js';
+import {
+    clientErrorResponse,
+    createdResponse,
+    successResponse,
+} from '../../utils/response.js';
 import Class from './class.model.js';
 import { getAvalaibleCode } from './helpers/getAvalaibleCode.js';
 import { handleNotFound } from '../../utils/handleNotFound.js';
 import { responseMessages } from '../../constants/messages.js';
+import { FORBIDDEN } from '../../constants/statusCode.js';
 
+// TODO: change findAllClasses to findAllMyClassc
+// TODO: add endpoint to get joined class
 const findAllClasses = async (req, res) => {
     try {
         const isWithTeacher = ['1', 'true'].includes(req.query.with_teacher);
@@ -17,6 +24,7 @@ const findAllClasses = async (req, res) => {
         } else {
             classes = await Class.find().sort({ createdAt: -1 });
         }
+
         return successResponse(res, {
             data: classes,
         });
@@ -54,6 +62,7 @@ const findClass = async (req, res) => {
 
 const createClass = async (req, res) => {
     try {
+        console.log(req.user);
         const { id: userId } = req.user;
         // get client input after validation middleware
         const { name, description } = req.body;
@@ -166,6 +175,65 @@ const deleteClass = async (req, res) => {
     }
 };
 
+const joinStudentByCode = async (req, res) => {
+    try {
+        const { id: classId } = req.params;
+        const { user } = req;
+        const { code } = req.query;
+
+        const class_ = await Class.findById(classId);
+
+        const message = setAttributeMessage(
+            responseMessages.classNotFound,
+            classId
+        );
+        await handleNotFound(class_, message);
+
+        if (class_.teacher.id.toString('hex') === user.id)
+            return clientErrorResponse(
+                res,
+                {
+                    message: responseMessages.cannotJoinTheClass,
+                },
+                FORBIDDEN
+            );
+
+        if (class_.code !== code)
+            return clientErrorResponse(
+                res,
+                {
+                    message: setAttributeMessage(
+                        responseMessages.classCodeNotExist,
+                        code
+                    ),
+                },
+                FORBIDDEN
+            );
+
+        const hasJoined = class_.students.includes(user.id);
+        if (hasJoined)
+            return clientErrorResponse(
+                res,
+                {
+                    message: setAttributeMessage(
+                        responseMessages.alreadyJoined,
+                        code
+                    ),
+                },
+                FORBIDDEN
+            );
+
+        class_.students.push(user);
+        await class_.save();
+
+        return successResponse(res, {
+            message: responseMessages.studentJoined,
+        });
+    } catch (error) {
+        handleError(res, error);
+    }
+};
+
 const classService = {
     findAllClasses,
     createClass,
@@ -173,5 +241,6 @@ const classService = {
     updateClass,
     deleteClass,
     updateClassCode,
+    joinStudentByCode,
 };
 export default classService;
