@@ -35,3 +35,15 @@ export const signUp = async (req, res) => {
 export const getMe = async (req, res) => {
     return await authService.getMe(req, res);
 };
+
+/**
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @desc Sign out
+ * @method GET
+ * @access Private
+ */
+export const signOut = async (req, res) => {
+    return await authService.signOut(req, res);
+};

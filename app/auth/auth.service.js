@@ -67,10 +67,22 @@ const getMe = async (req, res) => {
     }
 };
 
+const signOut = async (req, res) => {
+    try {
+        res.cookie('token', '');
+        return successResponse(res, {
+            message: authMessages.userLoggedOut,
+        });
+    } catch (error) {
+        handleError(res, error);
+    }
+};
+
 const authService = {
     signIn,
     signUp,
     getMe,
+    signOut,
 };
 
 export default authService;
