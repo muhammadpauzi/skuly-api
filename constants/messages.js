@@ -1,5 +1,9 @@
 export const responseMessages = {
     classNotFound: 'The class with the id :attribute not found.',
+    classDeleted: 'The class has been successfully deleted.',
+    classUpdated: 'The class has been successfully updated.',
+    classCodeUpdated: 'The class code has been successfully updated.',
+    classCreated: 'The class has been successfully created.',
 };
 
 export const authMessages = {

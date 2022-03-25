@@ -71,6 +71,7 @@ const createClass = async (req, res) => {
         });
         // and send to client
         return createdResponse(res, {
+            message: responseMessages.classCreated,
             data: newClass,
         });
     } catch (error) {
@@ -102,6 +103,7 @@ const updateClass = async (req, res) => {
 
         // and send to client
         return successResponse(res, {
+            message: responseMessages.classUpdated,
             data: updatedClass,
         });
     } catch (error) {
@@ -129,6 +131,7 @@ const updateClassCode = async (req, res) => {
         await handleNotFound(updatedClassCode, message);
 
         return successResponse(res, {
+            message: responseMessages.classCodeUpdated,
             data: {
                 _id: updatedClassCode.id,
                 code: updatedClassCode.code,
@@ -155,7 +158,9 @@ const deleteClass = async (req, res) => {
         // delete class
         class_.remove();
         // and send to client
-        return successResponse(res, {});
+        return successResponse(res, {
+            message: responseMessages.classDeleted,
+        });
     } catch (error) {
         handleError(res, error);
     }
