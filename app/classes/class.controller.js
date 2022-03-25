@@ -100,10 +100,22 @@ export const updateClassCode = async (req, res) => {
  *
  * @param {Object} req
  * @param {Object} res
- * @desc Update class code by id
- * @method PUT
+ * @desc Join student by code
+ * @method GET
  * @access Private
  */
 export const joinStudentByCode = async (req, res) => {
     return await classService.joinStudentByCode(req, res);
+};
+
+/**
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @desc Get all class works
+ * @method GET
+ * @access Private
+ */
+export const findAllClassWorks = async (req, res) => {
+    return await classService.findAllClassWorks(req, res);
 };

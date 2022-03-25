@@ -1,9 +1,10 @@
 import mongoose from 'mongoose';
 import { isDevelopment } from '../../utils/index.js';
 
-const classSchema = new mongoose.Schema(
+export const ENUM_TYPES = ['MATERIAL'];
+const workSchema = new mongoose.Schema(
     {
-        name: {
+        title: {
             type: String,
             maxlength: 256,
             required: true,
@@ -12,39 +13,30 @@ const classSchema = new mongoose.Schema(
             type: String,
             maxlength: 512,
         },
-        students: [
+        class: [
             {
                 type: mongoose.Schema.Types.ObjectId,
                 required: true,
-                ref: 'User',
+                ref: 'Class',
             },
         ],
         // teacher or owner
-        teacher: {
+        author: {
             type: mongoose.Schema.Types.ObjectId,
             required: true,
             ref: 'User',
         },
-        code: {
+        types: {
             type: String,
-            maxlength: 20,
             required: true,
-            unique: true,
+            enum: ENUM_TYPES,
+        },
+        duedate: {
+            type: Date,
+            required: false,
         },
     },
     { timestamps: true }
 );
 
-// hide code
-classSchema.set('toJSON', {
-    transform: function (doc, ret, opt) {
-        // in production
-        if (!isDevelopment()) {
-            delete ret['code'];
-            delete ret['__v'];
-        }
-        return ret;
-    },
-});
-
-export default mongoose.model('Class', classSchema);
+export default mongoose.model('Work', workSchema);

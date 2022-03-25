@@ -11,6 +11,7 @@ import { handleNotFound } from '../../utils/handleNotFound.js';
 import { responseMessages } from '../../constants/messages.js';
 import { FORBIDDEN } from '../../constants/statusCode.js';
 import { handleAuthorize } from '../../utils/handleAuthorize.js';
+import Work from '../works/work.model.js';
 
 // TODO: change findAllClasses to findAllMyClassc
 // TODO: add endpoint to get joined class
@@ -310,6 +311,37 @@ const joinStudentByCode = async (req, res) => {
     }
 };
 
+const findAllClassWorks = async (req, res) => {
+    try {
+        const { id: classId } = req.params;
+        const { id: userId } = req.user;
+
+        let class_ = await Class.findOne({
+            _id: classId,
+            students: { $in: [userId] },
+        }).populate('teacher');
+
+        const message = setAttributeMessage(
+            responseMessages.classNotFound,
+            classId
+        );
+        await handleNotFound(class_, message);
+
+        const works = await Work.find({ class: class_._id }).sort({
+            createdAt: -1,
+        });
+
+        class_ = class_.toJSON();
+        class_.works = works;
+
+        return successResponse(res, {
+            data: class_,
+        });
+    } catch (error) {
+        handleError(res, error);
+    }
+};
+
 const classService = {
     findAllMyClasses,
     findAllMyJoinedClasses,
@@ -320,5 +352,6 @@ const classService = {
     deleteClass,
     updateClassCode,
     joinStudentByCode,
+    findAllClassWorks,
 };
 export default classService;

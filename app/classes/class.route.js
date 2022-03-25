@@ -9,6 +9,7 @@ import {
     updateClass,
     updateClassCode,
     findAllMyJoinedClasses,
+    findAllClassWorks,
 } from './class.controller.js';
 import { validateCreateClass } from './validators/validateCreateClass.js';
 import { validateUpdateClass } from './validators/validateUpdateClass.js';
@@ -29,6 +30,7 @@ router
     .delete(verifyJwtToken, deleteClass);
 
 router.get('/:id/join', verifyJwtToken, joinStudentByCode);
-router.put('/:id/code', updateClassCode);
+router.put('/:id/code', verifyJwtToken, updateClassCode);
+router.get('/:id/works', verifyJwtToken, findAllClassWorks);
 
 export default router;
