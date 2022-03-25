@@ -56,17 +56,6 @@ const signUp = async (req, res) => {
     }
 };
 
-const getMe = async (req, res) => {
-    try {
-        const user = req.user;
-        return successResponse(res, {
-            data: user,
-        });
-    } catch (error) {
-        handleError(res, error);
-    }
-};
-
 const signOut = async (req, res) => {
     try {
         res.cookie('token', '');
@@ -81,7 +70,6 @@ const signOut = async (req, res) => {
 const authService = {
     signIn,
     signUp,
-    getMe,
     signOut,
 };
 
