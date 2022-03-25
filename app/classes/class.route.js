@@ -9,15 +9,18 @@ import {
 } from './class.controller.js';
 import { validateCreateClass } from './validators/validateCreateClass.js';
 import { validateUpdateClass } from './validators/validateUpdateClass.js';
-
+import { verifyJwtToken } from '../../middlewares/verifyJwtToken.js';
 const router = express.Router();
 
-router.route('/').get(findAllClasses).post(validateCreateClass, createClass);
+router
+    .route('/')
+    .get(verifyJwtToken, findAllClasses)
+    .post(verifyJwtToken, validateCreateClass, createClass);
 router
     .route('/:id')
-    .get(findClass)
-    .put(validateUpdateClass, updateClass)
-    .delete(deleteClass);
+    .get(verifyJwtToken, findClass)
+    .put(verifyJwtToken, validateUpdateClass, updateClass)
+    .delete(verifyJwtToken, deleteClass);
 
 router.put('/:id/code', updateClassCode);
 

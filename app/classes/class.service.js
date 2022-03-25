@@ -6,9 +6,17 @@ import { getAvalaibleCode } from './helpers/getAvalaibleCode.js';
 import { handleNotFound } from '../../utils/handleNotFound.js';
 import { responseMessages } from '../../constants/messages.js';
 
-const findAllClasses = async (res) => {
+const findAllClasses = async (req, res) => {
     try {
-        const classes = await Class.find().sort({ createdAt: -1 });
+        const isWithTeacher = ['1', 'true'].includes(req.query.with_teacher);
+        let classes;
+        if (isWithTeacher) {
+            classes = await Class.find()
+                .sort({ createdAt: -1 })
+                .populate('teacher');
+        } else {
+            classes = await Class.find().sort({ createdAt: -1 });
+        }
         return successResponse(res, {
             data: classes,
         });
@@ -19,9 +27,15 @@ const findAllClasses = async (res) => {
 
 const findClass = async (req, res) => {
     try {
+        const isWithTeacher = ['1', 'true'].includes(req.query.with_teacher);
         // get id (class id) from url
         const { id: classId } = req.params;
-        const class_ = await Class.findById(classId);
+        let class_;
+        if (isWithTeacher) {
+            class_ = await Class.findById(classId).populate('teacher');
+        } else {
+            class_ = await Class.findById(classId);
+        }
         // create message for class not found
         const message = setAttributeMessage(
             responseMessages.classNotFound,
@@ -40,12 +54,21 @@ const findClass = async (req, res) => {
 
 const createClass = async (req, res) => {
     try {
+        const { id: userId } = req.user;
         // get client input after validation middleware
         const { name, description } = req.body;
         // handle get unique code
         const code = await getAvalaibleCode();
+        const students = [];
+        const teacher = userId;
         // create new class
-        const newClass = await Class.create({ name, description, code });
+        const newClass = await Class.create({
+            name,
+            description,
+            code,
+            students,
+            teacher,
+        });
         // and send to client
         return createdResponse(res, {
             data: newClass,

@@ -1,5 +1,24 @@
 import mongoose from 'mongoose';
 
+const studentSchema = new mongoose.Schema({
+    username: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    name: {
+        type: String,
+        maxlength: 512,
+        required: true,
+    },
+    email: {
+        type: String,
+        maxlength: 512,
+        required: true,
+        unique: true,
+    },
+});
+
 const classSchema = new mongoose.Schema(
     {
         name: {
@@ -11,17 +30,25 @@ const classSchema = new mongoose.Schema(
             type: String,
             maxlength: 500,
         },
+        students: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                required: true,
+                ref: 'User',
+            },
+        ],
+        // teacher or owner
+        teacher: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+            ref: 'User',
+        },
         code: {
             type: String,
             maxlength: 20,
             required: true,
             unique: true,
         },
-        // user: {
-        //     type: mongoose.Schema.Types.ObjectId,
-        //     required: true,
-        //     ref: 'User',
-        // },
     },
     { timestamps: true }
 );
