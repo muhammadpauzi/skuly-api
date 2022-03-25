@@ -1,18 +1,19 @@
 import mongoose from 'mongoose';
 
-const classSchema = mongoose.Schema(
+const classSchema = new mongoose.Schema(
     {
         name: {
             type: String,
-            length: 254,
+            maxlength: 254,
             required: true,
         },
         description: {
             type: String,
+            maxlength: 500,
         },
         code: {
             type: String,
-            length: 20,
+            maxlength: 20,
             required: true,
             unique: true,
         },
