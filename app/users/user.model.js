@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { isDevelopment } from '../../utils/index.js';
 
 export const userSchema = new mongoose.Schema(
     {
@@ -31,7 +32,9 @@ export const userSchema = new mongoose.Schema(
 userSchema.set('toJSON', {
     transform: function (doc, ret, opt) {
         delete ret['password'];
-        delete ret['__v'];
+        if (!isDevelopment()) {
+            delete ret['__v'];
+        }
         return ret;
     },
 });
