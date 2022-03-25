@@ -10,7 +10,16 @@ export const verifyJwtToken = async (req, res, next) => {
     if (token) {
         try {
             const { id } = jwt.verify(token, getEnv('JWT_SECRET'));
-            req.user = await User.findById(id).select('-password');
+            const user = await User.findById(id).select('-password');
+            if (!user) {
+                res.cookie('token', '');
+                return handleError(res, {
+                    statusCode: 401,
+                    errorMessage: authMessages.tokenNotValid,
+                    message: authMessages.loginRequired,
+                });
+            }
+            req.user = user;
             return next();
         } catch (error) {
             if (
@@ -19,7 +28,8 @@ export const verifyJwtToken = async (req, res, next) => {
             )
                 return handleError(res, {
                     statusCode: 401,
-                    message: authMessages.tokenNotValid,
+                    errorMessage: authMessages.tokenNotValid,
+                    message: authMessages.loginRequired,
                 });
 
             return handleError(res, error);
