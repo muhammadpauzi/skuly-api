@@ -7,6 +7,53 @@ import { setAttributeMessage } from '../../utils/setAttributeMessage.js';
 import { getClassById } from '../classes/helpers/getClassById.js';
 import Work from './work.model.js';
 
+// findAllWorks endpoint there in class.service
+
+const findWork = async (req, res) => {
+    try {
+        const isWithTeacher = ['1', 'true'].includes(req.query.with_teacher);
+        // get id (class id) from url
+        const { classId = '' } = req.query;
+        const { id: workId } = res.params;
+        const { id: userId } = req.user;
+
+        let class_ = await Class.findOne({
+            $and: [
+                {
+                    _id: classId,
+                },
+                {
+                    $or: [
+                        {
+                            students: { $in: [userId] },
+                        },
+                        {
+                            teacher: userId,
+                        },
+                    ],
+                },
+            ],
+        }).populate('teacher');
+
+        const message = setAttributeMessage(
+            responseMessages.classNotFound,
+            classId
+        );
+        await handleNotFound(class_, message);
+
+        const work = await Work.findById(class_._id).populate('author');
+
+        class_ = class_.toJSON();
+        class_.work = work;
+        // if class found, send to client
+        return successResponse(res, {
+            data: class_,
+        });
+    } catch (error) {
+        handleError(res, error);
+    }
+};
+
 const createWork = async (req, res) => {
     try {
         const { id: userId } = req.user;

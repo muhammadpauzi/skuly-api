@@ -35,3 +35,15 @@ export const updateWork = async (req, res) => {
 export const deleteWork = async (req, res) => {
     return await workService.deleteWork(req, res);
 };
+
+/**
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @desc Find a work by class id and work id
+ * @method GET
+ * @access Private
+ */
+export const findWork = async (req, res) => {
+    return await workService.findWork(req, res);
+};
