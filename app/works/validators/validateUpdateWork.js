@@ -1,6 +1,7 @@
 import { validateResult } from '../../../middlewares/validateResult.js';
 import { check } from 'express-validator';
 import { inputsValidationMessages } from '../../../constants/messages.js';
+import { ENUM_TYPES } from '../work.model.js';
 
 const validateUpdateWork = [
     check('classId')
@@ -14,10 +15,7 @@ const validateUpdateWork = [
         .isIn(ENUM_TYPES)
         .withMessage(inputsValidationMessages.typeNotValid)
         .trim(),
-    check('duedate')
-        .isDate()
-        .withMessage(inputsValidationMessages.dueDateNotValid)
-        .trim(),
+    check('duedate').trim(),
     (req, res, next) => {
         validateResult(req, res, next);
     },
