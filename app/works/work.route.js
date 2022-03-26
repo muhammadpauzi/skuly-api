@@ -14,7 +14,7 @@ const router = express.Router();
 router.route('/').post(verifyJwtToken, validateCreateWork, createWork);
 router
     .route('/:id')
-    .get('/:id', verifyJwtToken, findWork)
+    .get(verifyJwtToken, findWork)
     .put(verifyJwtToken, validateUpdateWork, updateWork)
     .delete(verifyJwtToken, deleteWork);
 
