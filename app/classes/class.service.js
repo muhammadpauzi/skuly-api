@@ -12,12 +12,12 @@ import { responseMessages } from '../../constants/messages.js';
 import { FORBIDDEN } from '../../constants/statusCode.js';
 import { handleAuthorize } from '../../utils/handleAuthorize.js';
 import Work from '../works/work.model.js';
+import { getClassById } from './helpers/getClassById.js';
 
 // TODO: change findAllClasses to findAllMyClassc
 // TODO: add endpoint to get joined class
 const findAllMyClasses = async (req, res) => {
     try {
-        console.log('MASUK');
         const isWithTeacher = ['1', 'true'].includes(req.query.with_teacher);
         const { id: userId } = req.user;
         let classes;
@@ -172,7 +172,7 @@ const updateClass = async (req, res) => {
 
         await handleAuthorize(
             userId,
-            updatedClass.id,
+            updatedClass.teacher.id.toString('hex'),
             responseMessages.dontHavePermissionToUpdateClass
         );
 
@@ -207,7 +207,7 @@ const updateClassCode = async (req, res) => {
         await handleNotFound(updatedClassCode, message);
         await handleAuthorize(
             userId,
-            updatedClassCode.id,
+            updatedClassCode.teacher.id.toString('hex'),
             responseMessages.dontHavePermissionToUpdateClass
         );
 
@@ -228,19 +228,10 @@ const deleteClass = async (req, res) => {
         // get id (class id) from url
         const { id: classId } = req.params;
         const { id: userId } = req.user;
-        // update class by id  and return the updated class
-        const class_ = await Class.findById(classId);
-
-        // create message for class not found
-        const message = setAttributeMessage(
-            responseMessages.classNotFound,
-            classId
-        );
-        // if class not found, the errors are gonna be send to catch error
-        await handleNotFound(class_, message);
+        const class_ = await getClassById(classId);
         await handleAuthorize(
             userId,
-            class_.id,
+            class_.teacher.id.toString('hex'),
             responseMessages.dontHavePermissionToDeleteClass
         );
 
@@ -271,7 +262,7 @@ const joinStudentByCode = async (req, res) => {
 
         await handleAuthorize(
             user.id,
-            String(class_.teacher.id),
+            class_.teacher.id.toString('hex'),
             responseMessages.dontHavePermissionToDeleteClass
         );
 
@@ -317,8 +308,21 @@ const findAllClassWorks = async (req, res) => {
         const { id: userId } = req.user;
 
         let class_ = await Class.findOne({
-            _id: classId,
-            students: { $in: [userId] },
+            $and: [
+                {
+                    _id: classId,
+                },
+                {
+                    $or: [
+                        {
+                            students: { $in: [userId] },
+                        },
+                        {
+                            teacher: userId,
+                        },
+                    ],
+                },
+            ],
         }).populate('teacher');
 
         const message = setAttributeMessage(

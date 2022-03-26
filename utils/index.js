@@ -12,6 +12,10 @@ const upperCaseFirstLetterOfSentence = (string) => {
     return string[0].toUpperCase() + string.substr(1, string.length);
 };
 
+const isDate = (date) => {
+    return new Date(date) !== 'Invalid Date' && !isNaN(new Date(date));
+};
+
 const randomString = (length = 10, encoding = 'hex') => {
     return new Promise((resolve, reject) => {
         return crypto.randomBytes(length, (err, buffer) => {
@@ -21,4 +25,10 @@ const randomString = (length = 10, encoding = 'hex') => {
     });
 };
 
-export { getEnv, isDevelopment, randomString, upperCaseFirstLetterOfSentence };
+export {
+    getEnv,
+    isDevelopment,
+    randomString,
+    upperCaseFirstLetterOfSentence,
+    isDate,
+};

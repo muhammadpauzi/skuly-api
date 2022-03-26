@@ -1,7 +1,7 @@
 import { setAttributeMessage } from '../utils/setAttributeMessage.js';
 
 export const responseMessages = {
-    // error
+    // class - error
     classNotFound: 'The class with the id `:attribute` not found.',
     classCodeNotExist: 'The class with the code `:attribute` not found.',
     cannotJoinTheClass: "You can't join this class.",
@@ -10,12 +10,24 @@ export const responseMessages = {
         "You don't have any permissions to delete this class",
     dontHavePermissionToUpdateClass:
         "You don't have any permissions to update this class",
-    // success
+    // clsas - success
     classDeleted: 'The class has been successfully deleted.',
     classUpdated: 'The class has been successfully updated.',
     classCodeUpdated: 'The class code has been successfully updated.',
     classCreated: 'The class has been successfully created.',
     studentJoined: 'You have been successfully joined to this class.',
+    // works - success
+    workDeleted: 'The work has been successfully deleted.',
+    workUpdated: 'The work has been successfully updated.',
+    workCreated: 'The work has been successfully created.',
+    // works - error
+    workNotFound: 'The work with the id `:attribute` not found.',
+    dontHavePermissionToCreateWorkForThisClass:
+        "You don't have any permissions to create work for this class",
+    dontHavePermissionToUpdateWorkForThisClass:
+        "You don't have any permissions to update work for this class",
+    dontHavePermissionToDeleteWorkForThisClass:
+        "You don't have any permissions to delete work for this class",
 };
 
 // TODO: change `the user` to `you`
@@ -35,6 +47,7 @@ export const validationMessages = {
     email: 'The :attribute must be a valid email address.',
     alreadyRegistered: 'The :attribute already registered.',
     alphaNum: 'The :attribute must only contain letters and numbers.',
+    notValid: 'The :attribute value is not valid.',
 };
 
 export const inputsValidationMessages = {
@@ -60,6 +73,18 @@ export const inputsValidationMessages = {
         validationMessages.alphaNum,
         'username'
     ),
-    // class
+    // classes
     nameRequired: setAttributeMessage(validationMessages.required, 'name'),
+    // works
+    titleRequired: setAttributeMessage(validationMessages.required, 'title'),
+    classIdRequired: setAttributeMessage(
+        validationMessages.required,
+        'class id'
+    ),
+    typeNotValid: setAttributeMessage(validationMessages.notValid, 'type'),
+    dueDateNotValid: setAttributeMessage(
+        validationMessages.notValid,
+        'duedate'
+    ),
+    typeRequired: setAttributeMessage(validationMessages.required, 'type'),
 };
