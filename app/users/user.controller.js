@@ -11,3 +11,15 @@ import userService from './user.service.js';
 export const getMe = async (req, res) => {
     return await userService.getMe(req, res);
 };
+
+/**
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @desc Update profile
+ * @method PUT
+ * @access Private
+ */
+export const updateProfile = async (req, res) => {
+    return await userService.updateProfile(req, res);
+};

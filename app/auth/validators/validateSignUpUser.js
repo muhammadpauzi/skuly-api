@@ -1,60 +1,40 @@
 import { validateResult } from '../../../middlewares/validateResult.js';
 import { check } from 'express-validator';
-import { setAttributeMessage } from '../../../utils/setAttributeMessage.js';
-import { validationMessages } from '../../../constants/messages.js';
 import User from '../../users/user.model.js';
-
-const messages = {
-    usernameRequired: setAttributeMessage(
-        validationMessages.required,
-        'username'
-    ),
-    passwordRequired: setAttributeMessage(
-        validationMessages.required,
-        'password'
-    ),
-    emailRequired: setAttributeMessage(validationMessages.required, 'email'),
-    emailNotValid: setAttributeMessage(validationMessages.email, 'email'),
-    emailAlreadyRegistered: setAttributeMessage(
-        validationMessages.alreadyRegistered,
-        'email'
-    ),
-    usernameAlreadyRegistered: setAttributeMessage(
-        validationMessages.alreadyRegistered,
-        'username'
-    ),
-    usernameAlphaNum: setAttributeMessage(
-        validationMessages.alphaNum,
-        'username'
-    ),
-};
+import { inputsValidationMessages } from '../../../constants/messages.js';
 
 const validateSignUpUser = [
     check('username')
         .not()
         .isEmpty()
-        .withMessage(messages.usernameRequired)
+        .withMessage(inputsValidationMessages.usernameRequired)
         .isAlphanumeric()
-        .withMessage(messages.usernameAlphaNum)
+        .withMessage(inputsValidationMessages.usernameAlphaNum)
         .custom(async (usernameInput) => {
             const user = await User.findOne({ username: usernameInput.trim() });
-            if (user) throw new Error(messages.usernameAlreadyRegistered);
+            if (user)
+                throw new Error(
+                    inputsValidationMessages.usernameAlreadyRegistered
+                );
         })
         .trim(),
     check('password')
         .not()
         .isEmpty()
-        .withMessage(messages.passwordRequired)
+        .withMessage(inputsValidationMessages.passwordRequired)
         .trim(),
     check('email')
         .not()
         .isEmpty()
-        .withMessage(messages.emailRequired)
+        .withMessage(inputsValidationMessages.emailRequired)
         .isEmail()
-        .withMessage(messages.emailNotValid)
+        .withMessage(inputsValidationMessages.emailNotValid)
         .custom(async (emailInput) => {
             const user = await User.findOne({ email: emailInput.trim() });
-            if (user) throw new Error(messages.emailAlreadyRegistered);
+            if (user)
+                throw new Error(
+                    inputsValidationMessages.emailAlreadyRegistered
+                );
         })
         .normalizeEmail({ all_lowercase: true })
         .trim(),

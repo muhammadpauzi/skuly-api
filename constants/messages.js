@@ -1,3 +1,5 @@
+import { setAttributeMessage } from '../utils/setAttributeMessage.js';
+
 export const responseMessages = {
     // error
     classNotFound: 'The class with the id `:attribute` not found.',
@@ -33,4 +35,31 @@ export const validationMessages = {
     email: 'The :attribute must be a valid email address.',
     alreadyRegistered: 'The :attribute already registered.',
     alphaNum: 'The :attribute must only contain letters and numbers.',
+};
+
+export const inputsValidationMessages = {
+    usernameRequired: setAttributeMessage(
+        validationMessages.required,
+        'username'
+    ),
+    passwordRequired: setAttributeMessage(
+        validationMessages.required,
+        'password'
+    ),
+    emailRequired: setAttributeMessage(validationMessages.required, 'email'),
+    emailNotValid: setAttributeMessage(validationMessages.email, 'email'),
+    emailAlreadyRegistered: setAttributeMessage(
+        validationMessages.alreadyRegistered,
+        'email'
+    ),
+    usernameAlreadyRegistered: setAttributeMessage(
+        validationMessages.alreadyRegistered,
+        'username'
+    ),
+    usernameAlphaNum: setAttributeMessage(
+        validationMessages.alphaNum,
+        'username'
+    ),
+    // class
+    nameRequired: setAttributeMessage(validationMessages.required, 'name'),
 };

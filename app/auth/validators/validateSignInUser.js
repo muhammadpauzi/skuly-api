@@ -1,30 +1,17 @@
 import { validateResult } from '../../../middlewares/validateResult.js';
 import { check } from 'express-validator';
-import { setAttributeMessage } from '../../../utils/setAttributeMessage.js';
-import { validationMessages } from '../../../constants/messages.js';
-import User from '../../users/user.model.js';
-
-const messages = {
-    usernameRequired: setAttributeMessage(
-        validationMessages.required,
-        'username'
-    ),
-    passwordRequired: setAttributeMessage(
-        validationMessages.required,
-        'password'
-    ),
-};
+import { inputsValidationMessages } from '../../../constants/messages.js';
 
 const validateSignInUser = [
     check('username')
         .not()
         .isEmpty()
-        .withMessage(messages.usernameRequired)
+        .withMessage(inputsValidationMessages.usernameRequired)
         .trim(),
     check('password')
         .not()
         .isEmpty()
-        .withMessage(messages.passwordRequired)
+        .withMessage(inputsValidationMessages.passwordRequired)
         .trim(),
     (req, res, next) => {
         validateResult(req, res, next);
