@@ -93,13 +93,39 @@ const findClass = async (req, res) => {
         let class_;
         if (isWithTeacher) {
             class_ = await Class.findOne({
-                _id: classId,
-                students: { $in: [userId] },
+                $and: [
+                    {
+                        _id: classId,
+                    },
+                    {
+                        $or: [
+                            {
+                                students: { $in: [userId] },
+                            },
+                            {
+                                teacher: userId,
+                            },
+                        ],
+                    },
+                ],
             }).populate('teacher');
         } else {
             class_ = await Class.findOne({
-                _id: classId,
-                students: { $in: [userId] },
+                $and: [
+                    {
+                        _id: classId,
+                    },
+                    {
+                        $or: [
+                            {
+                                students: { $in: [userId] },
+                            },
+                            {
+                                teacher: userId,
+                            },
+                        ],
+                    },
+                ],
             });
         }
 
