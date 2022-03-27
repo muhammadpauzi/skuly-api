@@ -85,13 +85,13 @@ const findAllClasses = async (req, res) => {
 
 const findClass = async (req, res) => {
     try {
-        const isWithTeacher = ['1', 'true'].includes(req.query.with_teacher);
+        const isWithStudents = ['1', 'true'].includes(req.query.with_students);
         // get id (class id) from url
         const { id: classId } = req.params;
         const { id: userId } = req.user;
 
         let class_;
-        if (isWithTeacher) {
+        if (isWithStudents) {
             class_ = await Class.findOne({
                 $and: [
                     {
@@ -108,7 +108,7 @@ const findClass = async (req, res) => {
                         ],
                     },
                 ],
-            }).populate('teacher');
+            }).populate(['teacher', 'students']);
         } else {
             class_ = await Class.findOne({
                 $and: [
