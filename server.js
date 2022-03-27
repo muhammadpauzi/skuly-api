@@ -19,7 +19,12 @@ isDevelopment() && app.use(morgan('dev'));
 
 // global middleware
 app.use(cookieParser(getEnv('COOKIE_PARSER_SECRET', '123')));
-app.use(cors());
+app.use(
+    cors({
+        origin: getEnv('ALLOWED_ORIGINS').split(','),
+        credentials: true,
+    })
+);
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
