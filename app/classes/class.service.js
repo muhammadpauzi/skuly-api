@@ -248,32 +248,22 @@ const deleteClass = async (req, res) => {
 
 const joinStudentByCode = async (req, res) => {
     try {
-        const { id: classId } = req.params;
         const { user } = req;
         const { code } = req.query;
 
-        const class_ = await Class.findById(classId);
+        const class_ = await Class.findOne({ code });
 
         const message = setAttributeMessage(
-            responseMessages.classNotFound,
-            classId
+            responseMessages.classCodeNotExist,
+            code
         );
         await handleNotFound(class_, message);
 
-        await handleAuthorize(
-            user.id,
-            class_.teacher.id.toString('hex'),
-            responseMessages.dontHavePermissionToDeleteClass
-        );
-
-        if (class_.code !== code)
+        if (user.id === class_.teacher.id.toString('hex'))
             return clientErrorResponse(
                 res,
                 {
-                    message: setAttributeMessage(
-                        responseMessages.classCodeNotExist,
-                        code
-                    ),
+                    message: responseMessages.cannotJoinTheClass,
                 },
                 FORBIDDEN
             );
@@ -296,6 +286,7 @@ const joinStudentByCode = async (req, res) => {
 
         return successResponse(res, {
             message: responseMessages.studentJoined,
+            _id: class_._id,
         });
     } catch (error) {
         handleError(res, error);

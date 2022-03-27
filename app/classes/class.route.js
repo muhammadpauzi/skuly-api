@@ -29,7 +29,7 @@ router
     .put(verifyJwtToken, validateUpdateClass, updateClass)
     .delete(verifyJwtToken, deleteClass);
 
-router.post('/:id/join', verifyJwtToken, joinStudentByCode);
+router.post('/join', verifyJwtToken, joinStudentByCode);
 router.put('/:id/code', verifyJwtToken, updateClassCode);
 router.get('/:id/works', verifyJwtToken, findAllClassWorks);
 
