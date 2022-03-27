@@ -32,14 +32,14 @@ export const responseMessages = {
 
 // TODO: change `the user` to `you`
 export const authMessages = {
-    userRegistered: 'The user has been successfully registered.',
+    userRegistered: 'You have been successfully registered.',
     failed: 'Sign in failed, try again!.',
-    userLoggedIn: 'The user has been successfully logged in.',
+    userLoggedIn: 'You have been successfully logged in.',
     noToken: 'Not authorized, no token.',
     tokenNotValid: 'Token not valid.',
-    hasLoggedIn: 'The user already logged in.',
+    hasLoggedIn: 'You already logged in.',
     loginRequired: 'You are not logged in.',
-    userLoggedOut: 'The user has been successfully logged out.',
+    userLoggedOut: 'You have been successfully logged out.',
 };
 
 export const validationMessages = {
