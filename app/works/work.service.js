@@ -6,6 +6,7 @@ import { createdResponse, successResponse } from '../../utils/response.js';
 import { setAttributeMessage } from '../../utils/setAttributeMessage.js';
 import { getClassById } from '../classes/helpers/getClassById.js';
 import Work from './work.model.js';
+import { ENUM_TYPES } from './work.model.js';
 
 // findAllWorks endpoint there in class.service
 
@@ -48,6 +49,16 @@ const findWork = async (req, res) => {
         // if class found, send to client
         return successResponse(res, {
             data: class_,
+        });
+    } catch (error) {
+        handleError(res, error);
+    }
+};
+
+const findTypes = async (req, res) => {
+    try {
+        return successResponse(res, {
+            data: ENUM_TYPES,
         });
     } catch (error) {
         handleError(res, error);
@@ -160,6 +171,8 @@ const workService = {
     createWork,
     updateWork,
     deleteWork,
+    findWork,
+    findTypes,
 };
 
 export default workService;

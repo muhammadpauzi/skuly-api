@@ -47,3 +47,15 @@ export const deleteWork = async (req, res) => {
 export const findWork = async (req, res) => {
     return await workService.findWork(req, res);
 };
+
+/**
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @desc Get all types of work
+ * @method GET
+ * @access Private
+ */
+export const findTypes = async (req, res) => {
+    return await workService.findTypes(req, res);
+};
