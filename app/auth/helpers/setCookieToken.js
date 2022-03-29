@@ -10,8 +10,7 @@ export const setCookieToken = async (res, payload) => {
             res.cookie('token', token, {
                 httpOnly: true,
                 maxAge: 345600000, // 4d (same with expiresIn jwt)
-                // secure: getEnv('NODE_ENV', 'development') === 'production',
-                secure: true,
+                secure: getEnv('NODE_ENV', 'development') === 'production',
                 sameSite: 'none',
             });
             resolve(token);
