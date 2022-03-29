@@ -52,6 +52,18 @@ export const findClass = async (req, res) => {
  *
  * @param {Object} req
  * @param {Object} res
+ * @desc Find one class by id and return the code
+ * @method GET
+ * @access Private
+ */
+export const findClassCode = async (req, res) => {
+    return await classService.findClassCode(req, res);
+};
+
+/**
+ *
+ * @param {Object} req
+ * @param {Object} res
  * @desc Create a class
  * @method POST
  * @access Private

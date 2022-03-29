@@ -145,6 +145,39 @@ const findClass = async (req, res) => {
     }
 };
 
+const findClassCode = async (req, res) => {
+    try {
+        // get id (class id) from url
+        const { id: classId } = req.params;
+        const { id: userId } = req.user;
+
+        const class_ = await Class.findById(classId);
+
+        // create message for class not found
+        const message = setAttributeMessage(
+            responseMessages.classNotFound,
+            classId
+        );
+        // if class not found, the errors are gonna be send to catch error
+        await handleNotFound(class_, message);
+
+        await handleAuthorize(
+            userId,
+            class_.teacher.id.toString('hex'),
+            responseMessages.dontHavePermissionToGetClassCode
+        );
+        // if class found, send to client
+        return successResponse(res, {
+            data: {
+                _id: class_._id,
+                code: class_.code,
+            },
+        });
+    } catch (error) {
+        handleError(res, error);
+    }
+};
+
 const createClass = async (req, res) => {
     try {
         console.log(req.user);
@@ -374,5 +407,6 @@ const classService = {
     updateClassCode,
     joinStudentByCode,
     findAllClassWorks,
+    findClassCode,
 };
 export default classService;

@@ -10,6 +10,8 @@ export const responseMessages = {
         "You don't have any permissions to delete this class",
     dontHavePermissionToUpdateClass:
         "You don't have any permissions to update this class",
+    dontHavePermissionToGetClassCode:
+        "You don't have any permissions to get this class's code",
     // clsas - success
     classDeleted: 'The class has been successfully deleted.',
     classUpdated: 'The class has been successfully updated.',
