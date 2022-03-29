@@ -28,6 +28,9 @@ app.use(
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+app.get('/', (req, res) => {
+    res.status(200).json({ message: 'Hello!' });
+});
 // api routes
 app.use('/api', apiRouter);
 
