@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { isDevelopment } from '../../utils/index.js';
+import moment from 'moment';
 
 const classSchema = new mongoose.Schema(
     {
@@ -43,6 +44,16 @@ classSchema.set('toJSON', {
             delete ret['code'];
             delete ret['__v'];
         }
+        ret.createdAt = {
+            default: ret.createdAt,
+            formated1: moment(ret.createdAt).format('lll'),
+            formated2: moment(ret.createdAt).startOf('hour').fromNow(),
+        };
+        ret.updatedAt = {
+            default: ret.updatedAt,
+            formated1: moment(ret.updatedAt).format('lll'),
+            formated2: moment(ret.updatedAt).startOf('hour').fromNow(),
+        };
         return ret;
     },
 });

@@ -4,6 +4,7 @@ import { handleError } from '../../utils/handleError.js';
 import { handleNotFound } from '../../utils/handleNotFound.js';
 import { createdResponse, successResponse } from '../../utils/response.js';
 import { setAttributeMessage } from '../../utils/setAttributeMessage.js';
+import Class from '../classes/class.model.js';
 import { getClassById } from '../classes/helpers/getClassById.js';
 import Work from './work.model.js';
 import { ENUM_TYPES } from './work.model.js';
@@ -12,10 +13,9 @@ import { ENUM_TYPES } from './work.model.js';
 
 const findWork = async (req, res) => {
     try {
-        const isWithTeacher = ['1', 'true'].includes(req.query.with_teacher);
         // get id (class id) from url
         const { classId = '' } = req.query;
-        const { id: workId } = res.params;
+        const { id: workId } = req.params;
         const { id: userId } = req.user;
 
         let class_ = await Class.findOne({
@@ -42,7 +42,7 @@ const findWork = async (req, res) => {
         );
         await handleNotFound(class_, message);
 
-        const work = await Work.findById(class_._id).populate('author');
+        const work = await Work.findById(workId).populate('author');
 
         class_ = class_.toJSON();
         class_.work = work;
